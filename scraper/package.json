@@ -1,0 +1,24 @@
+{
+  "name": "auto-price-scraper",
+  "version": "1.0.0",
+  "description": "Naver Shopping price scraper using Playwright",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node example.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.99.3",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^17.3.1",
+    "node-cron": "^4.2.1",
+    "playwright": "^1.42.1",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

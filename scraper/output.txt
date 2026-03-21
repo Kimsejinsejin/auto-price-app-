@@ -1,0 +1,34 @@
+C:\Users\FAMILY01\Desktop\?꾨줈洹몃옩\?먮룞 媛寃?議곗젙 ?뱀빋\scraper\node_modules\ts-node\src\index.ts:859
+    return new TSError(diagnosticText, diagnosticCodes, diagnostics);
+           ^
+TSError: 殊?Unable to compile TypeScript:
+scheduler.ts(66,77): error TS2345: Argument of type '{ strategy: any; adjustAmount: any; stepUnit: any; useMarginDefense: any; useCircuitBreaker: any; circuitBreakerLimitPct: any; }' is not assignable to parameter of type 'StrategySettings'.
+  Type '{ strategy: any; adjustAmount: any; stepUnit: any; useMarginDefense: any; useCircuitBreaker: any; circuitBreakerLimitPct: any; }' is missing the following properties from type 'StrategySettings': strategyType, circuitBreakerLimitPercent
+scheduler.ts(68,18): error TS2339: Property 'price' does not exist on type 'PriceEngineResult'.
+scheduler.ts(70,95): error TS2339: Property 'price' does not exist on type 'PriceEngineResult'.
+scheduler.ts(72,98): error TS2339: Property 'price' does not exist on type 'PriceEngineResult'.
+scheduler.ts(79,52): error TS2339: Property 'lowestPrice' does not exist on type 'ScraperResult'.
+scheduler.ts(81,33): error TS2339: Property 'price' does not exist on type 'PriceEngineResult'.
+scheduler.ts(88,52): error TS2339: Property 'price' does not exist on type 'PriceEngineResult'.
+scheduler.ts(129,69): error TS2345: Argument of type '{ strategy: "TARGET_MINUS_N"; adjustAmount: number; stepUnit: number; useMarginDefense: boolean; useCircuitBreaker: boolean; circuitBreakerLimitPct: number; }' is not assignable to parameter of type 'StrategySettings'.
+  Type '{ strategy: "TARGET_MINUS_N"; adjustAmount: number; stepUnit: number; useMarginDefense: boolean; useCircuitBreaker: boolean; circuitBreakerLimitPct: number; }' is missing the following properties from type 'StrategySettings': strategyType, circuitBreakerLimitPercent
+scheduler.ts(130,38): error TS2339: Property 'price' does not exist on type 'PriceEngineResult'.
+scheduler.ts(132,66): error TS2339: Property 'price' does not exist on type 'PriceEngineResult'.
+
+    at createTSError (C:\Users\FAMILY01\Desktop\?꾨줈洹몃옩\?먮룞 媛寃?議곗젙 ?뱀빋\scraper\node_modules\ts-node\src\index.ts:859:12)
+    at reportTSError (C:\Users\FAMILY01\Desktop\?꾨줈洹몃옩\?먮룞 媛寃?議곗젙 ?뱀빋\scraper\node_modules\ts-node\src\index.ts:863:19)
+    at getOutput (C:\Users\FAMILY01\Desktop\?꾨줈洹몃옩\?먮룞 媛寃?議곗젙 ?뱀빋\scraper\node_modules\ts-node\src\index.ts:1077:36)
+    at Object.compile (C:\Users\FAMILY01\Desktop\?꾨줈洹몃옩\?먮룞 媛寃?議곗젙 ?뱀빋\scraper\node_modules\ts-node\src\index.ts:1433:41)
+    at Module.m._compile (C:\Users\FAMILY01\Desktop\?꾨줈洹몃옩\?먮룞 媛寃?議곗젙 ?뱀빋\scraper\node_modules\ts-node\src\index.ts:1617:30)
+    at node:internal/modules/cjs/loader:1871:10
+    at Object.require.extensions.<computed> [as .ts] (C:\Users\FAMILY01\Desktop\?꾨줈洹몃옩\?먮룞 媛寃?議곗젙 ?뱀빋\scraper\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1470:32)
+    at Module._load (node:internal/modules/cjs/loader:1290:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+  diagnosticCodes: [
+    2345, 2339, 2339,
+    2339, 2339, 2339,
+    2339, 2345, 2339,
+    2339
+  ]
+}
