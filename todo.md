@@ -10,6 +10,6 @@
 
 ## 🚀 진행 중 / 남은 작업 (In Progress / To Do)
 - [보류] `supabase` DB 세팅 및 API 라우트 연동 (비용 문제로 실용 단계 전까지 보류)
-- [ ] `JSON` 형태의 내보내기/가져오기(오프라인 DB) 기능 개발 (현재 다음 단계 제안)
-- [ ] `PWA` 지원을 위한 `manifest.json` 및 서비스 워커(Service Worker) 구성
+- [x] `JSON` 오프라인 데이터 백업/복구 시스템 구축 완료 (Local Storage)
+- [ ] 3단계: `PWA` 설치형 앱 구성을 위한 `manifest.json` 및 서비스 워커 세팅 (계획 승인 대기 단계)
 - [ ] 다음 사용자 지시 대기 중
