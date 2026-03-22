@@ -136,7 +136,7 @@ export function Dashboard() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="border-l-4 border-l-primary shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">최저가 점유율 (Win Rate)</CardTitle>
@@ -194,15 +194,17 @@ export function Dashboard() {
 
       {/* Main Analysis Tabs */}
       <Tabs defaultValue="performance" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
-          <TabsTrigger value="performance">성과 분석</TabsTrigger>
-          <TabsTrigger value="competitor">경쟁사 분석</TabsTrigger>
-          <TabsTrigger value="profit">수익성 분석</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+          <TabsList className="grid w-full grid-cols-3 min-w-[360px] lg:w-[400px]">
+            <TabsTrigger value="performance">성과 분석</TabsTrigger>
+            <TabsTrigger value="competitor">경쟁사 분석</TabsTrigger>
+            <TabsTrigger value="profit">수익성 분석</TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Tab 1: Performance Analysis */}
         <TabsContent value="performance" className="space-y-4">
-          <Card className="col-span-4">
+          <Card className="col-span-1 lg:col-span-4">
             <CardHeader>
               <CardTitle>가격 변동에 따른 판매량 상관관계</CardTitle>
               <CardDescription>
@@ -275,7 +277,7 @@ export function Dashboard() {
         {/* Tab 2: Competitor Analysis */}
         <TabsContent value="competitor" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-4">
+            <Card className="col-span-1 md:col-span-2 lg:col-span-4">
               <CardHeader>
                 <CardTitle>경쟁사별 최저가 위협 비율</CardTitle>
                 <CardDescription>어떤 마켓이 우리 상품의 최저가를 가장 자주 갱신하는가?</CardDescription>
@@ -307,7 +309,7 @@ export function Dashboard() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="col-span-3">
+            <Card className="col-span-1 md:col-span-2 lg:col-span-3">
               <CardHeader>
                 <CardTitle>주요 타겟 경쟁몰</CardTitle>
                 <CardDescription>집중 견제 대상 리스트</CardDescription>

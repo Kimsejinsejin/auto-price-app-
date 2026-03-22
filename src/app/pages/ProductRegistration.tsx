@@ -63,24 +63,26 @@ export function ProductRegistration() {
       </div>
 
       <Tabs defaultValue="basic" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 h-auto p-1">
-          <TabsTrigger value="basic" className="py-3 flex flex-col gap-1">
-            <span className="font-semibold">1. 기본 정보</span>
-            <span className="text-xs text-muted-foreground font-normal">상품 식별 및 원가 설정</span>
-          </TabsTrigger>
-          <TabsTrigger value="channels" className="py-3 flex flex-col gap-1">
-            <span className="font-semibold">2. 내 판매처 (Output)</span>
-            <span className="text-xs text-muted-foreground font-normal">가격 수정 대상 마켓 연동</span>
-          </TabsTrigger>
-          <TabsTrigger value="competitors" className="py-3 flex flex-col gap-1">
-            <span className="font-semibold">3. 경쟁사 추적 (Input)</span>
-            <span className="text-xs text-muted-foreground font-normal">크롤링 타겟 URL 설정</span>
-          </TabsTrigger>
-          <TabsTrigger value="strategy" className="py-3 flex flex-col gap-1">
-            <span className="font-semibold">4. 가격 방어 전략</span>
-            <span className="text-xs text-muted-foreground font-normal">자동 조정 규칙 및 안전장치</span>
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="grid w-[600px] md:w-full grid-cols-4 h-auto p-1">
+            <TabsTrigger value="basic" className="py-3 flex flex-col gap-1">
+              <span className="font-semibold">1. 기본 정보</span>
+              <span className="text-xs text-muted-foreground font-normal">상품 식별 및 원가 설정</span>
+            </TabsTrigger>
+            <TabsTrigger value="channels" className="py-3 flex flex-col gap-1">
+              <span className="font-semibold">2. 내 판매처 (Output)</span>
+              <span className="text-xs text-muted-foreground font-normal">가격 수정 대상 마켓 연동</span>
+            </TabsTrigger>
+            <TabsTrigger value="competitors" className="py-3 flex flex-col gap-1">
+              <span className="font-semibold">3. 경쟁사 추적 (Input)</span>
+              <span className="text-xs text-muted-foreground font-normal">크롤링 타겟 URL 설정</span>
+            </TabsTrigger>
+            <TabsTrigger value="strategy" className="py-3 flex flex-col gap-1">
+              <span className="font-semibold">4. 가격 방어 전략</span>
+              <span className="text-xs text-muted-foreground font-normal">자동 조정 규칙 및 안전장치</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* 1. 기본 정보 탭 */}
         <TabsContent value="basic">

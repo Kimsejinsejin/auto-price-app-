@@ -1,9 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Settings, History, ShieldAlert } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Settings, History, ShieldAlert, X } from 'lucide-react';
 import { cn } from '../../utils/cn';
+import { Button } from '../ui/button';
 
-export function Sidebar() {
+export function Sidebar({ onClose }: { onClose?: () => void }) {
   const navItems = [
     { icon: LayoutDashboard, label: '대시보드', to: '/' },
     { icon: ShoppingBag, label: '상품 관리', to: '/products' },
@@ -13,9 +14,16 @@ export function Sidebar() {
 
   return (
     <div className="flex h-screen w-64 flex-col border-r bg-card text-card-foreground">
-      <div className="flex h-16 items-center px-6 border-b">
-        <ShieldAlert className="h-6 w-6 text-primary mr-2" />
-        <span className="text-xl font-bold tracking-tight">PriceGuard</span>
+      <div className="flex h-16 items-center justify-between px-6 border-b">
+        <div className="flex items-center">
+          <ShieldAlert className="h-6 w-6 text-primary mr-2" />
+          <span className="text-xl font-bold tracking-tight">PriceGuard</span>
+        </div>
+        {onClose && (
+          <Button variant="ghost" size="icon" className="md:hidden" onClick={onClose}>
+            <X className="h-5 w-5" />
+          </Button>
+        )}
       </div>
       
       <nav className="flex-1 space-y-1 p-4">
@@ -23,6 +31,7 @@ export function Sidebar() {
           <NavLink
             key={item.to}
             to={item.to}
+            onClick={onClose}
             className={({ isActive }) =>
               cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
