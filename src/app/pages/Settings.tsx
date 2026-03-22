@@ -3,12 +3,35 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Button } from '../components/ui/button';
-import { Shield, Key, RefreshCw, Save, Bell, AlertTriangle } from 'lucide-react';
+import { Shield, Key, Bell, AlertTriangle, Save, Download, Upload, Database } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { Switch } from '../components/ui/switch';
+import { exportDataToJSON, importDataFromJSON, saveToLocalStorage, loadFromLocalStorage } from '../../lib/storage';
 
 export function Settings() {
   const [activeTab, setActiveTab] = React.useState('general');
+
+  // Load from local storage initially
+  const [settings, setSettings] = React.useState({
+    undercut: loadFromLocalStorage('settings_undercut', '100'),
+    safety: loadFromLocalStorage('settings_safety', '10'),
+    coupangVendorId: loadFromLocalStorage('settings_coupangVendorId', ''),
+    coupangAccessKey: loadFromLocalStorage('settings_coupangAccessKey', ''),
+    coupangSecretKey: loadFromLocalStorage('settings_coupangSecretKey', ''),
+    naverClientId: loadFromLocalStorage('settings_naverClientId', ''),
+    naverSecretKey: loadFromLocalStorage('settings_naverSecretKey', ''),
+  });
+
+  const handleChange = (key: string, value: string) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+    saveToLocalStorage(`settings_${key}`, value); // Auto-save on change
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    importDataFromJSON(e, () => {
+      window.location.reload(); // Reload to apply imported settings
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -18,11 +41,11 @@ export function Settings() {
       </div>
 
       <div className="w-full">
-        <div className="flex w-full border-b bg-background mb-6">
+        <div className="flex w-full border-b bg-background mb-6 overflow-x-auto">
           <button
             onClick={() => setActiveTab('general')}
             className={cn(
-              "px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px hover:text-foreground",
+              "whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px hover:text-foreground",
               activeTab === 'general' ? "border-primary text-primary" : "border-transparent text-muted-foreground"
             )}
           >
@@ -31,16 +54,25 @@ export function Settings() {
           <button
             onClick={() => setActiveTab('api')}
             className={cn(
-              "px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px hover:text-foreground",
+              "whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px hover:text-foreground",
               activeTab === 'api' ? "border-primary text-primary" : "border-transparent text-muted-foreground"
             )}
           >
             API 연동 관리
           </button>
           <button
+            onClick={() => setActiveTab('data')}
+            className={cn(
+              "whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px hover:text-foreground",
+              activeTab === 'data' ? "border-primary text-primary" : "border-transparent text-muted-foreground"
+            )}
+          >
+            데이터 백업/복구
+          </button>
+          <button
             onClick={() => setActiveTab('notifications')}
             className={cn(
-              "px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px hover:text-foreground",
+              "whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px hover:text-foreground",
               activeTab === 'notifications' ? "border-primary text-primary" : "border-transparent text-muted-foreground"
             )}
           >
@@ -57,14 +89,14 @@ export function Settings() {
                   <CardTitle>가격 결정 규칙</CardTitle>
                 </div>
                 <CardDescription>
-                  경쟁사 가격 변동 시 대응할 기본 알고리즘을 설정합니다.
+                  경쟁사 가격 변동 시 대응할 기본 알고리즘을 설정합니다. (입력 시 브라우저에 자동 저장)
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid gap-3">
                   <Label htmlFor="undercut" className="text-base font-semibold">기본 차감액 (원)</Label>
                   <div className="flex items-center gap-2">
-                    <Input id="undercut" defaultValue="100" type="number" className="w-[120px]" />
+                    <Input id="undercut" value={settings.undercut} onChange={(e) => handleChange('undercut', e.target.value)} type="number" className="w-[120px]" />
                     <span className="text-sm text-muted-foreground">원 더 저렴하게 설정</span>
                   </div>
                   <p className="text-xs text-muted-foreground">경쟁사 최저가보다 항상 이 금액만큼 낮게 유지합니다. (최소 10원 단위)</p>
@@ -76,7 +108,7 @@ export function Settings() {
                     <AlertTriangle className="h-4 w-4 text-amber-500" />
                   </Label>
                   <div className="flex items-center gap-2">
-                    <Input id="safety" defaultValue="10" type="number" className="w-[120px]" />
+                    <Input id="safety" value={settings.safety} onChange={(e) => handleChange('safety', e.target.value)} type="number" className="w-[120px]" />
                     <span className="text-sm text-muted-foreground">% 이상 하락 시 변경 중단</span>
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -85,11 +117,6 @@ export function Settings() {
                   </p>
                 </div>
               </CardContent>
-              <CardFooter className="border-t px-6 py-4 bg-muted/20">
-                <Button>
-                  <Save className="mr-2 h-4 w-4" /> 설정 저장하기
-                </Button>
-              </CardFooter>
             </Card>
           </div>
         )}
@@ -103,7 +130,7 @@ export function Settings() {
                   <CardTitle>마켓 API 키 관리</CardTitle>
                 </div>
                 <CardDescription>
-                  자동 가격 조정을 위해 각 마켓 판매자 센터의 API 키를 입력하세요.
+                  자동 가격 조정을 위해 각 마켓 판매자 센터의 API 키를 입력하세요. (입력 시 브라우저에 자동 저장)
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -112,23 +139,22 @@ export function Settings() {
                     <h3 className="font-semibold flex items-center text-lg">
                       쿠팡 (Coupang Wing)
                     </h3>
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">미연동</span>
+                    <span className={cn("rounded-full px-3 py-1 text-xs font-bold", settings.coupangAccessKey ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500")}>
+                      {settings.coupangAccessKey ? "입력됨" : "미입력"}
+                    </span>
                   </div>
                   <div className="grid gap-2">
                     <Label>Vendor ID</Label>
-                    <Input placeholder="Coupang Vendor ID 입력" />
+                    <Input value={settings.coupangVendorId} onChange={(e) => handleChange('coupangVendorId', e.target.value)} placeholder="Coupang Vendor ID 입력" />
                   </div>
                   <div className="grid gap-2">
                     <Label>Access Key</Label>
-                    <Input type="password" placeholder="Access Key 입력" />
+                    <Input type="password" value={settings.coupangAccessKey} onChange={(e) => handleChange('coupangAccessKey', e.target.value)} placeholder="Access Key 입력" />
                   </div>
                   <div className="grid gap-2">
                     <Label>Secret Key</Label>
-                    <Input type="password" placeholder="Secret Key 입력" />
+                    <Input type="password" value={settings.coupangSecretKey} onChange={(e) => handleChange('coupangSecretKey', e.target.value)} placeholder="Secret Key 입력" />
                   </div>
-                  <Button className="w-full bg-primary hover:bg-primary/90 text-white mt-2">
-                    쿠팡 연동하기
-                  </Button>
                 </div>
 
                 <div className="space-y-4 rounded-lg border p-5">
@@ -136,19 +162,75 @@ export function Settings() {
                      <h3 className="font-semibold flex items-center text-lg">
                       네이버 스마트스토어
                     </h3>
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">미연동</span>
+                    <span className={cn("rounded-full px-3 py-1 text-xs font-bold", settings.naverClientId ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500")}>
+                      {settings.naverClientId ? "입력됨" : "미입력"}
+                    </span>
                   </div>
                   <div className="grid gap-2">
                     <Label>Application ID (Client ID)</Label>
-                    <Input placeholder="네이버 커머스API 센터에서 발급받은 ID 입력" />
+                    <Input value={settings.naverClientId} onChange={(e) => handleChange('naverClientId', e.target.value)} placeholder="네이버 커머스API 센터에서 발급받은 ID 입력" />
                   </div>
                   <div className="grid gap-2">
                     <Label>Secret Key</Label>
-                    <Input type="password" placeholder="Secret Key 입력" />
+                    <Input type="password" value={settings.naverSecretKey} onChange={(e) => handleChange('naverSecretKey', e.target.value)} placeholder="Secret Key 입력" />
                   </div>
-                  <Button className="w-full bg-[#03C75A] hover:bg-[#02b351] text-white">
-                    네이버 스마트스토어 연동하기
-                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {activeTab === 'data' && (
+          <div className="grid gap-6">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Database className="h-5 w-5 text-primary" />
+                  <CardTitle>오프라인 시스템 (데이터 백업 및 복구)</CardTitle>
+                </div>
+                <CardDescription>
+                  입력된 설정값들을 브라우저 밖의 로컬 PC에 영구 백업하고, 필요할 때 언제든 복구할 수 있습니다.<br/>
+                  (클라우드 DB 없이도 데이터를 안전하게 관리할 수 있습니다.)
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid gap-4 md:grid-cols-2">
+                  
+                  {/* Export Section */}
+                  <div className="rounded-lg border p-5 bg-muted/10 space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-lg flex items-center gap-2">
+                        <Download className="h-4 w-4" /> 데이터 내보내기
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        현재 브라우저에 자동 저장된 API 키와 마진율 등을 `.json` 파일 형태로 안전하게 다운로드합니다.
+                      </p>
+                    </div>
+                    <Button onClick={exportDataToJSON} className="w-full font-bold">
+                      최신 데이터 다운로드 (백업)
+                    </Button>
+                  </div>
+
+                  {/* Import Section */}
+                  <div className="rounded-lg border p-5 bg-muted/10 space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-lg flex items-center gap-2">
+                         <Upload className="h-4 w-4" /> 데이터 가져오기
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        이전에 백업해둔 `.json` 데이터 파일을 선택하면, 환경설정 및 저장값들이 즉시 복원됩니다.
+                      </p>
+                    </div>
+                    <div className="relative">
+                      <Input
+                        type="file"
+                        accept=".json"
+                        onChange={handleImport}
+                        className="cursor-pointer file:cursor-pointer file:bg-primary file:text-primary-foreground file:border-0 file:rounded-md file:px-4 file:py-1 file:mr-4 file:hover:bg-primary/90"
+                      />
+                    </div>
+                  </div>
+                  
                 </div>
               </CardContent>
             </Card>
@@ -156,7 +238,7 @@ export function Settings() {
         )}
 
         {activeTab === 'notifications' && (
-           <div className="grid gap-6">
+          <div className="grid gap-6">
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -190,11 +272,8 @@ export function Settings() {
                   <Switch id="noti-error" defaultChecked />
                 </div>
               </CardContent>
-              <CardFooter className="border-t px-6 py-4 bg-muted/20">
-                <Button>설정 저장하기</Button>
-              </CardFooter>
             </Card>
-           </div>
+          </div>
         )}
       </div>
     </div>
