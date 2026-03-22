@@ -112,19 +112,23 @@ export function Settings() {
                     <h3 className="font-semibold flex items-center text-lg">
                       쿠팡 (Coupang Wing)
                     </h3>
-                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">연동됨</span>
+                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">미연동</span>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Vendor ID</Label>
+                    <Input placeholder="Coupang Vendor ID 입력" />
                   </div>
                   <div className="grid gap-2">
                     <Label>Access Key</Label>
-                    <Input type="password" value="************************" readOnly className="bg-white" />
+                    <Input type="password" placeholder="Access Key 입력" />
                   </div>
                   <div className="grid gap-2">
                     <Label>Secret Key</Label>
-                    <Input type="password" value="************************" readOnly className="bg-white" />
+                    <Input type="password" placeholder="Secret Key 입력" />
                   </div>
-                  <div className="flex justify-end">
-                    <Button variant="outline" size="sm" className="text-xs">연동 정보 수정</Button>
-                  </div>
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white mt-2">
+                    쿠팡 연동하기
+                  </Button>
                 </div>
 
                 <div className="space-y-4 rounded-lg border p-5">

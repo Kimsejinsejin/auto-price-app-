@@ -25,6 +25,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../com
 
 export function ProductRegistration() {
   const navigate = useNavigate();
+  const [additionalMarkets, setAdditionalMarkets] = React.useState<number[]>([]);
+
+  const addMarket = () => {
+    setAdditionalMarkets([...additionalMarkets, Date.now()]);
+  };
+
+  const removeMarket = (id: number) => {
+    setAdditionalMarkets(additionalMarkets.filter(m => m !== id));
+  };
 
   const handleSave = async () => {
     // import { supabase } from '../../lib/supabase';
@@ -236,9 +245,57 @@ export function ProductRegistration() {
                   </div>
                 </div>
               </div>
+              {additionalMarkets.map((id) => (
+                <div key={id} className="rounded-lg border border-dashed border-primary/50 p-4 relative">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="absolute right-2 top-2 text-muted-foreground hover:text-destructive"
+                    onClick={() => removeMarket(id)}
+                  >
+                     <Trash2 className="h-4 w-4" />
+                  </Button>
+                  <div className="flex items-start justify-between mb-4 pr-10">
+                    <div className="flex items-center gap-3 w-full">
+                      <div className="h-8 w-8 rounded bg-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs">M</div>
+                      <div className="w-[180px]">
+                        <Select defaultValue="11st">
+                          <SelectTrigger className="h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="11st">11번가</SelectItem>
+                            <SelectItem value="gmarket">G마켓</SelectItem>
+                            <SelectItem value="auction">옥션</SelectItem>
+                            <SelectItem value="interpark">인터파크</SelectItem>
+                            <SelectItem value="ssg">SSG/이마트</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label className="text-xs">판매처 상품 번호</Label>
+                      <Input placeholder="상품 번호 입력" />
+                    </div>
+                    <div className="space-y-2">
+                       <Label className="text-xs">옵션 번호 (선택사항)</Label>
+                       <Input placeholder="없을 시 빈칸" />
+                    </div>
+                    <div className="col-span-2">
+                      <Label className="text-xs">상품 접속 URL</Label>
+                      <div className="flex gap-2">
+                        <Input placeholder="https://..." />
+                        <Button variant="outline" size="icon"><Search className="h-4 w-4" /></Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </CardContent>
             <CardFooter className="border-t bg-muted/50 px-6 py-4">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={addMarket}>
                 <Plus className="mr-2 h-4 w-4" /> 다른 판매처 추가 (11번가, 지마켓 등)
               </Button>
             </CardFooter>

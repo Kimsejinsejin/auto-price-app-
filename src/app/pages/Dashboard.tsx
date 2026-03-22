@@ -36,16 +36,42 @@ import { cn } from '../utils/cn';
 
 // --- Mock Data for Analysis ---
 
-// 1. Price vs Sales Correlation (가격을 내렸을 때 판매량 변화)
-const salesCorrelationData = [
-  { date: '12.16', price: 15200, sales: 45, revenue: 684000 },
-  { date: '12.17', price: 15100, sales: 48, revenue: 724800 },
-  { date: '12.18', price: 15100, sales: 52, revenue: 785200 },
-  { date: '12.19', price: 14800, sales: 85, revenue: 1258000 }, // Price drop spike
-  { date: '12.20', price: 14800, sales: 92, revenue: 1361600 },
-  { date: '12.21', price: 14900, sales: 88, revenue: 1311200 },
-  { date: '12.22', price: 14500, sales: 120, revenue: 1740000 }, // Lowest price, highest sales
-];
+// 1. Price vs Sales Correlation (가격을 내렸을 때 판매량 변화) & KPI Data
+const dashboardData = {
+  '24h': {
+    salesCorrelation: [
+      { date: '00:00', price: 15200, sales: 12, revenue: 182400 },
+      { date: '04:00', price: 15200, sales: 5, revenue: 76000 },
+      { date: '08:00', price: 15200, sales: 25, revenue: 380000 },
+      { date: '12:00', price: 14800, sales: 65, revenue: 962000 },
+      { date: '16:00', price: 14800, sales: 50, revenue: 740000 },
+      { date: '20:00', price: 14500, sales: 88, revenue: 1276000 },
+      { date: '24:00', price: 14500, sales: 45, revenue: 652500 },
+    ],
+    kpi: { winRate: '88.5%', winRateTrend: '+1.2%', revenue: '₩4,268,900', revenueTrend: '+5%', warnings: '12개', defenses: '324건', defenseText: '최근 24시간 동안 자동 대응' }
+  },
+  '7d': {
+    salesCorrelation: [
+      { date: '12.16', price: 15200, sales: 45, revenue: 684000 },
+      { date: '12.17', price: 15100, sales: 48, revenue: 724800 },
+      { date: '12.18', price: 15100, sales: 52, revenue: 785200 },
+      { date: '12.19', price: 14800, sales: 85, revenue: 1258000 },
+      { date: '12.20', price: 14800, sales: 92, revenue: 1361600 },
+      { date: '12.21', price: 14900, sales: 88, revenue: 1311200 },
+      { date: '12.22', price: 14500, sales: 120, revenue: 1740000 },
+    ],
+    kpi: { winRate: '85.2%', winRateTrend: '+4.5%', revenue: '₩42,500,000', revenueTrend: '+12%', warnings: '65개', defenses: '1,240건', defenseText: '최근 7일간 자동 대응' }
+  },
+  '30d': {
+    salesCorrelation: [
+      { date: '1주차', price: 15500, sales: 210, revenue: 3255000 },
+      { date: '2주차', price: 15200, sales: 280, revenue: 4256000 },
+      { date: '3주차', price: 14900, sales: 450, revenue: 6705000 },
+      { date: '4주차', price: 14500, sales: 680, revenue: 9860000 },
+    ],
+    kpi: { winRate: '79.8%', winRateTrend: '+8.2%', revenue: '₩185,420,000', revenueTrend: '+25%', warnings: '142개', defenses: '5,600건', defenseText: '최근 30일간 자동 대응' }
+  }
+};
 
 // 2. Competitor Market Share (누가 내 최저가를 위협하는가)
 const competitorShareData = [
@@ -117,10 +143,10 @@ export function Dashboard() {
             <Target className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">85.2%</div>
+            <div className="text-2xl font-bold">{dashboardData[period as keyof typeof dashboardData].kpi.winRate}</div>
             <p className="text-xs text-muted-foreground mt-1 flex items-center">
               <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-              전주 대비 4.5% 상승
+              전 기간 대비 {dashboardData[period as keyof typeof dashboardData].kpi.winRateTrend} 상승
             </p>
           </CardContent>
         </Card>
@@ -131,10 +157,10 @@ export function Dashboard() {
             <DollarSign className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">₩42,500,000</div>
+            <div className="text-2xl font-bold">{dashboardData[period as keyof typeof dashboardData].kpi.revenue}</div>
             <p className="text-xs text-muted-foreground mt-1 flex items-center">
               <ArrowUpRight className="h-3 w-3 text-green-500 mr-1" />
-              가격 최적화로 +12% 증가
+              가격 최적화로 {dashboardData[period as keyof typeof dashboardData].kpi.revenueTrend} 증가
             </p>
           </CardContent>
         </Card>
@@ -145,7 +171,7 @@ export function Dashboard() {
             <AlertTriangle className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-600">65개</div>
+            <div className="text-2xl font-bold text-amber-600">{dashboardData[period as keyof typeof dashboardData].kpi.warnings}</div>
             <p className="text-xs text-muted-foreground mt-1">
               마진율 5% 미만 상품 주의
             </p>
@@ -158,9 +184,9 @@ export function Dashboard() {
             <CheckCircle2 className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,240건</div>
+            <div className="text-2xl font-bold">{dashboardData[period as keyof typeof dashboardData].kpi.defenses}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              지난 24시간 동안 자동 대응
+              {dashboardData[period as keyof typeof dashboardData].kpi.defenseText}
             </p>
           </CardContent>
         </Card>
@@ -186,7 +212,7 @@ export function Dashboard() {
             <CardContent className="pl-2">
               <div className="h-[350px] w-full min-w-0">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={salesCorrelationData}>
+                  <ComposedChart data={dashboardData[period as keyof typeof dashboardData].salesCorrelation}>
                     <defs>
                       <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
