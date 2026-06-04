@@ -1,0 +1,13 @@
+{
+  "adminId": "미정",
+  "adminPw": "미정",
+  "subAdminId": "admin_sub",
+  "subAdminPw": "sub_pw_1234!",
+  "testId": "admin_test",
+  "testPw": "test_pw_1234!",
+  "loginScreenStatus": "구현 완료",
+  "paymentStatus": "연동 안함",
+  "googleAutomationStatus": "미적용",
+  "appDownloadStatus": "미적용",
+  "adminPageStatus": "미구현"
+}
