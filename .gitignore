@@ -4,3 +4,4 @@ dist/
 .env.local
 scraper/node_modules/
 .DS_Store
+*.sync-conflict-*
